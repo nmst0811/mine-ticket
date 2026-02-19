@@ -1,4 +1,4 @@
-# Sync-Task for mine
+# Mine-Ticket
 **リンク:https://nmst0811.github.io/Sync-Task-for-mine/**
 
 「Mine-Ticket」はNext-js、TypeScript、Prismaを使用した、申込みから入場までを一貫して行える「無料電子チケット管理サービス」です。
