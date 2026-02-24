@@ -1,103 +1,101 @@
-import Image from "next/image";
+import Link from "next/link";
+
+import Sandbox from "@/components/demo/Sandbox";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="flex flex-col items-center bg-black overflow-hidden">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-6 py-20 text-center relative">
+        <div className="max-w-3xl space-y-8 relative z-10">
+          <div className="inline-block px-4 py-1.5 mb-4 rounded-full border border-cyan-400/30 bg-cyan-400/10 text-cyan-400 text-sm font-medium tracking-wide animate-fade-in">
+            もっと気軽に、手軽に。
+          </div>
+          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-white">
+            ファンメイドライブに<br />
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent italic">
+              特化した座席決定。
+            </span>
+          </h1>
+          <p className="text-xl text-white/60 md:text-2xl font-light max-w-2xl mx-auto leading-relaxed">
+            100〜300人規模の「手軽な」無料イベント管理。<br className="hidden md:block" />
+            個人活動者やファンコミュニティのための、体験重視のチケットツール。
+          </p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="#try" className="bg-cyan-400 text-black px-8 py-4 rounded-xl font-extrabold hover:bg-cyan-300 transition-all shadow-[0_0_30px_rgba(34,211,238,0.3)]">
+              今すぐ試してみる
+            </Link>
+            <Link href="#about" className="bg-white/5 text-white border border-white/10 px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all">
+              詳しく知る
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Decorative background elements */}
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[128px] -z-0" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-600/10 rounded-full blur-[128px] -z-0" />
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="w-full py-24 bg-white/[0.02] border-y border-white/5 scroll-mt-16">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+                「もっと気軽に、<br />手軽に。」
+              </h2>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h4 className="text-cyan-400 font-bold uppercase tracking-widest text-sm">主催者への価値</h4>
+                  <p className="text-white/70 leading-relaxed font-light">
+                    面倒な座席番号（列・番）の発行を、範囲選択で一瞬で終わらせたい。
+                    もうエクセルや手書きの座席管理に悩む必要はありません。
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-blue-400 font-bold uppercase tracking-widest text-sm">来場者への価値</h4>
+                  <p className="text-white/70 leading-relaxed font-light">
+                    会員登録などの高いハードルなく、スムーズに座席を確保し、スマホで入場。
+                    ファンとの大切な時間を、もっとスマートに。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 rounded-3xl blur-2xl opacity-50 group-hover:opacity-100 transition-opacity" />
+              <div className="relative bg-black border border-white/10 p-8 rounded-3xl space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-cyan-400/10 flex items-center justify-center text-cyan-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                  </div>
+                  <div className="font-bold text-white">
+                    ターゲット主催者
+                  </div>
+                </div>
+                <ul className="space-y-3 text-sm text-white/50">
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    個人活動者・Vtuber
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    ファンコミュニティ・オフ会
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    学生団体・文化祭
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sandbox Section */}
+      <Sandbox />
     </div>
   );
 }

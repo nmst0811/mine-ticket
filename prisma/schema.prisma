@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  rowRange    String   // e.g., "A-E"
+  colRange    Int      // e.g., 20
+  seats       Seat[]
+  tickets     Ticket[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Seat {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  rowName   String   // e.g., "A"
+  seatNum   Int      // e.g., 12
+  status    String   @default("available") // available, reserved, blocked
+  ticket    Ticket?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([eventId, rowName, seatNum])
+}
+
+model Ticket {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  seatId    String   @unique
+  seat      Seat     @relation(fields: [seatId], references: [id])
+  userId    String?  // Optional for guest/demo mode
+  qrHash    String   @unique
+  status    String   @default("booked") // booked, checked-in
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
