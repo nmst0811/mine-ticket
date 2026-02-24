@@ -1,7 +1,8 @@
 # Mine-Ticket
-**リンク:https://nmst0811.github.io**
+**リンク(デモサイト):https://nmst0811.github.io/mine-ticket**
 
 「Mine-Ticket」はNext-js、TypeScript、Prismaを使用した、申込みから入場までを一貫して行える「無料電子チケット管理サービス」です。
+デモサイトでは、イベントの作成からチケットの発行、QRコードの生成、入場管理までの一連の流れを体験できます。
 
 -----
 
