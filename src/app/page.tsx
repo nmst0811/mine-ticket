@@ -6,14 +6,14 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center bg-black overflow-hidden">
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-6 py-20 text-center relative">
-        <div className="max-w-5xl space-y-8 relative z-10">
+      <section className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-6 py-20 text-center relative">
+        <div className="max-w-4xl w-full space-y-8 relative z-10">
           <div className="inline-block px-4 py-1.5 mb-4 rounded-full border border-cyan-400/30 bg-cyan-400/10 text-cyan-400 text-sm font-medium tracking-wide animate-fade-in">
             もっと気軽に、手軽に。
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter text-white">
-            ファンメイドライブに<br />
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent italic">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tighter text-white leading-tight">
+            ファンメイドライブに
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent block">
               特化した座席販売サービス。
             </span>
           </h1>

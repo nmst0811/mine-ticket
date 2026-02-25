@@ -17,9 +17,9 @@ export async function createEvent(formData: {
       title: formData.title,
       date: formData.date,
       type: formData.type,
-      rowRange: formData.type === 'SEATING' ? formData.rowRange : null,
-      colRange: formData.type === 'SEATING' ? formData.colRange : null,
-      capacity: formData.type === 'NUMBERED' ? formData.capacity : null,
+      rowRange: formData.type === 'SEATING' ? (formData.rowRange ?? null) : null,
+      colRange: formData.type === 'SEATING' ? (formData.colRange ?? null) : null,
+      capacity: formData.type === 'NUMBERED' ? (formData.capacity ?? null) : null,
     }
   });
 
