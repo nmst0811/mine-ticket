@@ -14,7 +14,7 @@ export default function Home() {
           <h1 className="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter text-white">
             ファンメイドライブに<br />
             <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent italic">
-              特化した座席決定。
+              特化した座席販売サービス。
             </span>
           </h1>
           <p className="text-base sm:text-xl text-white/60 md:text-2xl font-light max-w-2xl mx-auto leading-relaxed">
