@@ -1,5 +1,5 @@
 # Mine-Ticket
-**リンク(デモサイト): https://nmst0811.github.io/mine-ticket**
+**リンク(デモサイト): https://mine-ticket-demo.vercel.app**
 
 「Mine-Ticket」は、ファンメイド・無料イベントに特化した「手軽さ」と「気軽さ」を追求したチケット管理プラットフォームです。
 

@@ -1,27 +1,48 @@
 'use client';
 
-import { useState } from 'react';
-import { generateSeats, Seat } from '@/lib/utils/seat-utils';
+import { useState, useEffect } from 'react';
+import { getEventSeats, bookSeat } from '@/app/actions';
+import { Seat } from '@/lib/utils/seat-utils';
 import SeatGrid from '@/components/SeatGrid';
 
-export default function VisitorDemo() {
-  const [seats, setSeats] = useState<Seat[]>(() => {
-    const s = generateSeats('A', 'E', 10);
-    // Mock some already reserved seats
-    return s.map((seat, i) => i % 7 === 0 ? { ...seat, status: 'reserved' } : seat);
-  });
+interface VisitorDemoProps {
+  eventId: string;
+}
+
+export default function VisitorDemo({ eventId }: VisitorDemoProps) {
+  const [seats, setSeats] = useState<Seat[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSeats = async () => {
+      const data = await getEventSeats(eventId);
+      setSeats(data as Seat[]);
+      setLoading(false);
+    };
+    fetchSeats();
+  }, [eventId]);
 
   const handleSeatSelect = (seatId: string) => {
     setSelectedSeat(prev => prev === seatId ? null : seatId);
   };
 
-  const handleBook = () => {
+  const handleBook = async () => {
     if (!selectedSeat) return;
-    setSeats(seats.map(s => s.id === selectedSeat ? { ...s, status: 'reserved' } : s));
-    setSelectedSeat(null);
-    alert('チケットを確保しました！（デモモード）');
+
+    try {
+      await bookSeat(eventId, selectedSeat);
+      // Refresh seats
+      const data = await getEventSeats(eventId);
+      setSeats(data as Seat[]);
+      setSelectedSeat(null);
+      alert('チケットを確保しました！（DBに保存されました）');
+    } catch (e) {
+      alert('予約に失敗しました。他の人が先に予約した可能性があります。');
+    }
   };
+
+  if (loading) return <div className="text-white/20">Loading seats...</div>;
 
   return (
     <div className="space-y-6 w-full max-w-4xl animate-fade-in">
@@ -38,22 +59,14 @@ export default function VisitorDemo() {
             <div className="w-3 h-3 rounded bg-cyan-400" />
             <span className="text-white/40 uppercase">予約済み</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bg-blue-500" />
-            <span className="text-white/40 uppercase">選択中</span>
-          </div>
         </div>
 
         <div className="relative overflow-hidden mb-8">
-          {/* Displaying selected seat as blue for visual distinction in demo */}
           <SeatGrid
             seats={seats.map(s => s.id === selectedSeat ? { ...s, status: 'reserved' as any } : s)}
             onSeatClick={handleSeatSelect}
             mode="visitor"
           />
-          {/* Overriding styles for 'selected' state in the grid would be better, 
-                but for the demo we just swap status or we can add a selected style to SeatGrid.
-                Let's stick to this simple approach for now. */}
         </div>
 
         <button
