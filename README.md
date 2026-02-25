@@ -12,8 +12,9 @@
 ### 多彩な入場方式への対応
 
 イベントの性質に合わせて、3つの入場方式から選択可能です。
+https://github.com/user-attachments/assets/32b7106c-c747-47ac-8969-c97cd7db53ba
 
-[![イベント作成・管理の様子](./images/01.png)](https://www.youtube.com/watch?v=Bi9W_kSB8_s)
+
 
 - **自由席 (FREE_SEATING)**: 来場者が座席表から好きな場所を選択して予約できます。
 - **指定席 (ASSIGNED_SEATING)**: 来場者が枚数のみを指定し、システムがランダムに最適席を割り当てます。
