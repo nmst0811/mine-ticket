@@ -3,16 +3,21 @@
 import { useState } from 'react';
 import { createEvent } from '@/app/actions';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+
+type EventTypeValue = 'FREE_SEATING' | 'ASSIGNED_SEATING' | 'NUMBERED';
 
 export default function OrganizerPage() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
-  const [type, setType] = useState<'SEATING' | 'NUMBERED'>('SEATING');
+  const [type, setType] = useState<EventTypeValue>('FREE_SEATING');
   const [rowRange, setRowRange] = useState('A-E');
   const [colRange, setColRange] = useState(10);
   const [capacity, setCapacity] = useState(100);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isSeatingType = type === 'FREE_SEATING' || type === 'ASSIGNED_SEATING';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,8 +27,8 @@ export default function OrganizerPage() {
         title,
         date: new Date(date),
         type,
-        rowRange: type === 'SEATING' ? rowRange : undefined,
-        colRange: type === 'SEATING' ? colRange : undefined,
+        rowRange: isSeatingType ? rowRange : undefined,
+        colRange: isSeatingType ? colRange : undefined,
         capacity: type === 'NUMBERED' ? capacity : undefined,
       });
       router.push(`/event/${eventId}`);
@@ -34,6 +39,12 @@ export default function OrganizerPage() {
       setIsLoading(false);
     }
   };
+
+  const typeOptions: { value: EventTypeValue; label: string; desc: string }[] = [
+    { value: 'FREE_SEATING', label: '🪑 自由席', desc: '来場者が座席を選択' },
+    { value: 'ASSIGNED_SEATING', label: '🎯 指定席', desc: 'ランダム割り当て' },
+    { value: 'NUMBERED', label: '🎟️ 整理券', desc: '枚数のみ' },
+  ];
 
   return (
     <div className="max-w-2xl mx-auto p-8">
@@ -65,31 +76,27 @@ export default function OrganizerPage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-400 mb-2">入場方式</label>
-          <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => setType('SEATING')}
-              className={`flex-1 py-3 rounded-lg border transition-all ${type === 'SEATING'
-                  ? 'bg-purple-600 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]'
-                  : 'bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-750'
-                }`}
-            >
-              座席指定 (Seating)
-            </button>
-            <button
-              type="button"
-              onClick={() => setType('NUMBERED')}
-              className={`flex-1 py-3 rounded-lg border transition-all ${type === 'NUMBERED'
-                  ? 'bg-purple-600 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]'
-                  : 'bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-750'
-                }`}
-            >
-              整理券 (Numbered)
-            </button>
+          <div className="grid grid-cols-3 gap-3">
+            {typeOptions.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setType(opt.value)}
+                className={cn(
+                  "py-3 rounded-lg border text-sm transition-all text-center",
+                  type === opt.value
+                    ? 'bg-purple-600 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]'
+                    : 'bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-750'
+                )}
+              >
+                <div className="font-bold">{opt.label}</div>
+                <div className="text-xs text-gray-400 mt-1">{opt.desc}</div>
+              </button>
+            ))}
           </div>
         </div>
 
-        {type === 'SEATING' ? (
+        {isSeatingType ? (
           <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-2">列の範囲 (例: A-E)</label>

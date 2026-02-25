@@ -8,15 +8,17 @@ import { createEvent } from '@/app/actions';
 
 type Mode = 'organizer' | 'visitor' | null;
 type OrganizerStep = 'setup' | 'manage';
+type EventTypeValue = 'FREE_SEATING' | 'ASSIGNED_SEATING' | 'NUMBERED';
 
 export default function Sandbox() {
   const [activeMode, setActiveMode] = useState<Mode>(null);
   const [eventId, setEventId] = useState<string | null>(null);
+  const [eventType, setEventType] = useState<EventTypeValue>('FREE_SEATING');
   const [organizerStep, setOrganizerStep] = useState<OrganizerStep>('setup');
 
   // Form state
   const [title, setTitle] = useState('');
-  const [type, setType] = useState<'SEATING' | 'NUMBERED'>('SEATING');
+  const [type, setType] = useState<EventTypeValue>('FREE_SEATING');
   const [rowRange, setRowRange] = useState('A-E');
   const [colRange, setColRange] = useState(10);
   const [capacity, setCapacity] = useState(50);
@@ -34,16 +36,18 @@ export default function Sandbox() {
   const handleCreateEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsCreating(true);
+    const isSeating = type === 'FREE_SEATING' || type === 'ASSIGNED_SEATING';
     try {
       const id = await createEvent({
         title: title || 'サンドボックス イベント',
         date: new Date(),
         type,
-        rowRange: type === 'SEATING' ? rowRange : undefined,
-        colRange: type === 'SEATING' ? colRange : undefined,
+        rowRange: isSeating ? rowRange : undefined,
+        colRange: isSeating ? colRange : undefined,
         capacity: type === 'NUMBERED' ? capacity : undefined,
       });
       setEventId(id);
+      setEventType(type);
       setOrganizerStep('manage');
     } catch (err) {
       console.error('Failed to create event:', err);
@@ -52,6 +56,14 @@ export default function Sandbox() {
       setIsCreating(false);
     }
   };
+
+  const isSeatingType = type === 'FREE_SEATING' || type === 'ASSIGNED_SEATING';
+
+  const typeOptions: { value: EventTypeValue; icon: string; label: string; desc: string }[] = [
+    { value: 'FREE_SEATING', icon: '🪑', label: '自由席', desc: '来場者が座席を選択' },
+    { value: 'ASSIGNED_SEATING', icon: '🎯', label: '指定席', desc: '主催者がランダム割り当て' },
+    { value: 'NUMBERED', icon: '🎟️', label: '整理券', desc: '枚数のみ・番号自動' },
+  ];
 
   return (
     <div id="try" className="w-full py-16 md:py-24 scroll-mt-16">
@@ -113,41 +125,32 @@ export default function Sandbox() {
                   />
                 </div>
 
-                {/* Type Toggle */}
+                {/* Type Toggle — 3 options */}
                 <div>
                   <label className="block text-xs sm:text-sm font-medium text-white/50 mb-3">入場方式</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setType('SEATING')}
-                      className={cn(
-                        "py-3 sm:py-4 rounded-xl border text-xs sm:text-sm font-bold transition-all",
-                        type === 'SEATING'
-                          ? "bg-cyan-400/20 border-cyan-400 text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-                          : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
-                      )}
-                    >
-                      <div className="text-base sm:text-lg mb-1">🪑</div>
-                      座席指定
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setType('NUMBERED')}
-                      className={cn(
-                        "py-3 sm:py-4 rounded-xl border text-xs sm:text-sm font-bold transition-all",
-                        type === 'NUMBERED'
-                          ? "bg-cyan-400/20 border-cyan-400 text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-                          : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
-                      )}
-                    >
-                      <div className="text-base sm:text-lg mb-1">🎟️</div>
-                      整理券
-                    </button>
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                    {typeOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setType(opt.value)}
+                        className={cn(
+                          "py-3 sm:py-4 rounded-xl border text-xs sm:text-sm font-bold transition-all",
+                          type === opt.value
+                            ? "bg-cyan-400/20 border-cyan-400 text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+                            : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10"
+                        )}
+                      >
+                        <div className="text-base sm:text-lg mb-1">{opt.icon}</div>
+                        {opt.label}
+                        <div className="text-[10px] sm:text-xs font-normal text-white/30 mt-1">{opt.desc}</div>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
                 {/* Conditional layout inputs */}
-                {type === 'SEATING' ? (
+                {isSeatingType ? (
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <label className="block text-xs sm:text-sm font-medium text-white/50 mb-2">列の範囲 (例: A-E・1-10)</label>
@@ -197,7 +200,10 @@ export default function Sandbox() {
           ) : activeMode === 'organizer' && organizerStep === 'manage' && eventId ? (
             // ── Phase 2: Seat/Ticket Management ──
             <div className="w-full max-w-4xl animate-fade-in space-y-4">
-              <div className="flex items-center justify-end">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-white/30">
+                  方式: {eventType === 'FREE_SEATING' ? '🪑 自由席' : eventType === 'ASSIGNED_SEATING' ? '🎯 指定席' : '🎟️ 整理券'}
+                </span>
                 <button
                   onClick={() => { setOrganizerStep('setup'); setEventId(null); }}
                   className="text-xs text-white/30 hover:text-white/60 transition-colors"
@@ -208,7 +214,7 @@ export default function Sandbox() {
               <OrganizerDemo eventId={eventId} />
             </div>
           ) : activeMode === 'visitor' && eventId ? (
-            <VisitorDemo eventId={eventId} />
+            <VisitorDemo eventId={eventId} eventType={eventType} />
           ) : null}
         </div>
       </div>

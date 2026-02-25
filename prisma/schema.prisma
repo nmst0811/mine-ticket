@@ -9,7 +9,8 @@ datasource db {
 }
 
 enum EventType {
-  SEATING
+  FREE_SEATING
+  ASSIGNED_SEATING
   NUMBERED
 }
 
@@ -18,7 +19,7 @@ model Event {
   title       String
   description String?
   date        DateTime
-  type        EventType @default(SEATING)
+  type        EventType @default(FREE_SEATING)
   rowRange    String?   // e.g., "A-E", null for numbered
   colRange    Int?      // e.g., 20, null for numbered
   capacity    Int?      // Total capacity for numbered events
