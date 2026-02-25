@@ -111,8 +111,8 @@ export default function VisitorDemo({ eventId, eventType }: VisitorDemoProps) {
                 <p className="text-xs text-white/30 mt-2">最大4枚まで</p>
               </div>
 
-              {/* Contiguous Option for Assigned Seating */}
-              {isAssigned && quantity > 1 && (
+              {/* Contiguous Option for Assigned Seating and Numbered Tickets */}
+              {quantity > 1 && (
                 <div className="bg-white/[0.03] p-4 rounded-xl border border-white/5 space-y-3">
                   <label className="flex items-center justify-center gap-3 cursor-pointer group">
                     <input
@@ -126,7 +126,7 @@ export default function VisitorDemo({ eventId, eventType }: VisitorDemoProps) {
                     </span>
                   </label>
                   <p className="text-[11px] text-white/40 leading-relaxed max-w-[280px] mx-auto text-left sm:text-center">
-                    ※ 可能な限り隣り合った席を確保しますが、空席状況により離れた席になる場合があります。その場合も予約は実行されます。
+                    ※ 可能な限り{isAssigned ? '隣り合った席' : '連続した番号'}を確保しますが、空き状況により離れる場合があります。その場合も予約は実行されます。
                   </p>
                 </div>
               )}

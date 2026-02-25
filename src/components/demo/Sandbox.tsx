@@ -70,7 +70,7 @@ export default function Sandbox() {
       <div className="container mx-auto px-4 sm:px-6 flex flex-col items-center">
         <div className="text-center mb-10 md:mb-16 space-y-3 md:space-y-4">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight text-white">
-            サンドボックスモード (DB連携版)
+            試してみる
           </h2>
           <p className="text-sm sm:text-lg text-white/50 max-w-2xl mx-auto font-light">
             ログインなしで、実際のデータベースへの保存と座席管理を今すぐ体験。
