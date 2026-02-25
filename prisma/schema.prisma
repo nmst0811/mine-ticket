@@ -1,14 +1,56 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum EventType {
+  SEATING
+  NUMBERED
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  type        EventType @default(SEATING)
+  rowRange    String?   // e.g., "A-E", null for numbered
+  colRange    Int?      // e.g., 20, null for numbered
+  capacity    Int?      // Total capacity for numbered events
+  seats       Seat[]
+  tickets     Ticket[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Seat {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  rowName   String   // e.g., "A"
+  seatNum   Int      // e.g., 12
+  status    String   @default("available") // available, reserved, blocked
+  ticket    Ticket?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([eventId, rowName, seatNum])
+}
+
+model Ticket {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  seatId    String   @unique
+  seat      Seat     @relation(fields: [seatId], references: [id])
+  userId    String?  // Optional for guest/demo mode
+  qrHash    String   @unique
+  status    String   @default("booked") // booked, checked-in
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

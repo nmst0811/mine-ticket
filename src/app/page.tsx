@@ -7,26 +7,26 @@ export default function Home() {
     <div className="flex flex-col items-center bg-black overflow-hidden">
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-6 py-20 text-center relative">
-        <div className="max-w-3xl space-y-8 relative z-10">
+        <div className="max-w-5xl space-y-8 relative z-10">
           <div className="inline-block px-4 py-1.5 mb-4 rounded-full border border-cyan-400/30 bg-cyan-400/10 text-cyan-400 text-sm font-medium tracking-wide animate-fade-in">
             もっと気軽に、手軽に。
           </div>
-          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-white">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter text-white">
             ファンメイドライブに<br />
             <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent italic">
               特化した座席決定。
             </span>
           </h1>
-          <p className="text-xl text-white/60 md:text-2xl font-light max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-white/60 md:text-2xl font-light max-w-2xl mx-auto leading-relaxed">
             100〜300人規模の「手軽な」無料イベント管理。<br className="hidden md:block" />
             個人活動者やファンコミュニティのための、体験重視のチケットツール。
           </p>
 
           <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="#try" className="bg-cyan-400 text-black px-8 py-4 rounded-xl font-extrabold hover:bg-cyan-300 transition-all shadow-[0_0_30px_rgba(34,211,238,0.3)]">
+            <Link href="#try" className="bg-cyan-400 text-black px-6 py-4 rounded-xl font-extrabold hover:bg-cyan-300 transition-all shadow-[0_0_30px_rgba(34,211,238,0.3)]">
               今すぐ試してみる
             </Link>
-            <Link href="#about" className="bg-white/5 text-white border border-white/10 px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all">
+            <Link href="https://github.com/nmst0811/mine-ticket" target="_blank" rel="noopener noreferrer" className="bg-white/5 text-white border border-white/10 px-6 py-4 rounded-xl font-bold hover:bg-white/10 transition-all">
               詳しく知る
             </Link>
           </div>
@@ -40,9 +40,9 @@ export default function Home() {
       {/* About Section */}
       <section id="about" className="w-full py-24 bg-white/[0.02] border-y border-white/5 scroll-mt-16">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div className="space-y-8">
-              <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white tracking-tight">
                 「もっと気軽に、<br />手軽に。」
               </h2>
               <div className="space-y-6">

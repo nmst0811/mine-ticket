@@ -1,36 +1,64 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/db';
 import { generateSeats } from '@/lib/utils/seat-utils';
+import { Prisma } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
-export async function createDemoEvent() {
-  const rowStart = 'A';
-  const rowEnd = 'E';
-  const colCount = 10;
-
+export async function createEvent(formData: {
+  title: string;
+  date: Date;
+  type: 'SEATING' | 'NUMBERED';
+  rowRange?: string;
+  colRange?: number;
+  capacity?: number;
+}) {
   const event = await prisma.event.create({
     data: {
-      title: 'ファンメイドライブ 2026 (Demo)',
-      date: new Date(),
-      rowRange: `${rowStart}-${rowEnd}`,
-      colRange: colCount,
+      title: formData.title,
+      date: formData.date,
+      type: formData.type,
+      rowRange: formData.type === 'SEATING' ? formData.rowRange : null,
+      colRange: formData.type === 'SEATING' ? formData.colRange : null,
+      capacity: formData.type === 'NUMBERED' ? formData.capacity : null,
     }
   });
 
-  const seatsData = generateSeats(rowStart, rowEnd, colCount).map(s => ({
-    eventId: event.id,
-    rowName: s.rowName,
-    seatNum: s.seatNum,
-    status: s.status,
-  }));
+  if (formData.type === 'SEATING' && formData.rowRange && formData.colRange) {
+    const [rowStart, rowEnd] = formData.rowRange!.split('-');
+    const seatsData = generateSeats(rowStart, rowEnd, formData.colRange!).map(s => ({
+      eventId: event.id,
+      rowName: s.rowName,
+      seatNum: s.seatNum,
+      status: 'available',
+    }));
 
-  await prisma.seat.createMany({
-    data: seatsData,
-  });
+    await prisma.seat.createMany({
+      data: seatsData,
+    });
+  } else if (formData.type === 'NUMBERED' && formData.capacity) {
+    const seatsData = Array.from({ length: formData.capacity }, (_, i) => ({
+      eventId: event.id,
+      rowName: 'Ticket',
+      seatNum: i + 1,
+      status: 'available',
+    }));
+
+    await prisma.seat.createMany({
+      data: seatsData,
+    });
+  }
 
   return event.id;
+}
+
+export async function createDemoEvent() {
+  return await createEvent({
+    title: 'ファンメイドライブ 2026 (Demo)',
+    date: new Date(),
+    type: 'SEATING',
+    rowRange: 'A-E',
+    colRange: 10,
+  });
 }
 
 export async function getEventSeats(eventId: string) {
@@ -52,7 +80,7 @@ export async function toggleSeatStatus(seatId: string, currentStatus: string) {
 }
 
 export async function bookSeat(eventId: string, seatId: string) {
-  return await prisma.$transaction(async (tx) => {
+  return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const seat = await tx.seat.findUnique({
       where: { id: seatId },
     });
