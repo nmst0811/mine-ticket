@@ -1,8 +1,18 @@
 import Link from "next/link";
+import prisma from "@/lib/db";
 
 import Sandbox from "@/components/demo/Sandbox";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  // Supabaseのプロジェクト一時停止を防ぐため、サイトアクセス時に軽量なクエリを実行します
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+  } catch (error) {
+    console.error("Failed to ping database:", error);
+  }
+
   return (
     <div className="flex flex-col items-center bg-black overflow-hidden">
       {/* Hero Section */}
